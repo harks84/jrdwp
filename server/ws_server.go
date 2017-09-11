@@ -58,12 +58,40 @@ func (server *WSServer) Start() {
 }
 
 func initKey(server *WSServer) error {
-	privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
+
+	if _, err := os.Stat(common.PrivateKeyPath()); os.IsNotExist(err) {
+		privateKey, err := rsa.GenerateKey(rand.Reader, 2048)
+		if err != nil {
+			log.Println("can't generate key", err.Error())
+			return err
+		}
+
+		privateKeyBytes := pem.EncodeToMemory(
+		    &pem.Block{
+			Type: "RSA PRIVATE KEY",
+			Bytes: x509.MarshalPKCS1PrivateKey(privateKey),
+		    },
+		)
+
+		err = ioutil.WriteFile(common.PrivateKeyPath(), privateKeyBytes, 0655)
+		if err != nil {
+			log.Println("can't write private key", common.PrivateKeyPath(), err.Error())
+			return err
+		}
+
+	}
+
+	
+	privateKeyFileBytes, err := ioutil.ReadFile(common.PrivateKeyPath())
+        block, _ := pem.Decode([]byte(privateKeyFileBytes))
+	privateKey, err := x509.ParsePKCS1PrivateKey(block.Bytes)
 	if err != nil {
-		log.Println("can't generate key", err.Error())
+		log.Println("can't read private key", common.PrivateKeyPath(), err.Error())
 		return err
 	}
 	server.key = privateKey
+	
+	
 
 	publicKeyBytes, err := common.PublicKeyToBytes(&privateKey.PublicKey)
 	if err != nil {
@@ -72,12 +100,13 @@ func initKey(server *WSServer) error {
 	}
 	log.Printf("generated public key:\n\n%s\n", publicKeyBytes)
 
-	err = ioutil.WriteFile(common.PublicKeyPath(), publicKeyBytes, 0655)
-	if err != nil {
-		log.Println("can't write public key", common.PublicKeyPath(), err.Error())
-		return err
+	if _, err := os.Stat(common.PublicKeyPath()); os.IsNotExist(err) {
+		err = ioutil.WriteFile(common.PublicKeyPath(), publicKeyBytes, 0655)
+		if err != nil {
+			log.Println("can't write public key", common.PublicKeyPath(), err.Error())
+			return err
+		}
 	}
-
 	return nil
 }
 
