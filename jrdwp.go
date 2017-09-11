@@ -43,6 +43,7 @@ type Config struct {
 	AllowedJdwpPorts []int          `json:"allowedJdwpPorts"`
 	JdwpPort         *int           `json:"jdwpPort"`
 	ServerDeadline   *int           `json:"serverDeadline"`
+	Scheme           *string          `json:"scheme"`
 	PublicKey        *rsa.PublicKey `json:"clientKey"`
 }
 
@@ -72,6 +73,7 @@ func parseFlags() *Config {
 	conf.WsOrigin = flag.String("ws-origin", "", "websocket request origin header, default \"\"")
 	conf.JdwpPort = flag.Int("jdwp-port", -1, "jdwp port of remote application, mandatory")
 	conf.ServerDeadline = flag.Int("server-deadline", DefaultServerDeadline, "server deadline in minutes that server will shutdown on deadline, default 60 minutes")
+        conf.Scheme = flag.String("scheme", "ws", "Scheme, ws or wss, default ws")
 	jdwpPortsText := flag.String("allowed-jdwp-ports", "", "allowed jdwp ports likes: \"5005,5006\", mandatory")
 	flag.Parse()
 
@@ -116,6 +118,7 @@ func startClient(conf *Config) {
 		*conf.WsPath,
 		*conf.WsOrigin,
 		*conf.JdwpPort,
+                *conf.Scheme,
 		conf.PublicKey)
 
 	tcpServer := client.NewTCPServer(wsClient, *conf.BindPort)
