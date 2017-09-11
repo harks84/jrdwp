@@ -102,6 +102,8 @@ jrdwp server will generate .jrdwp_key under the working directory, please copy i
         websocket server path (default "jrdwp")
     -jdwp-port int
         jdwp port of remote application (default -1)
+    -scheme
+        ws or wss for ssl (default "ws")
 ```
 
 # Security
