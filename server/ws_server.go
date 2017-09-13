@@ -3,14 +3,17 @@ package server
 import (
 	"crypto/rand"
 	"crypto/rsa"
+	"crypto/x509"
+	"encoding/pem"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
-
+	
 	"github.com/gorilla/websocket"
 	"github.com/harks84/jrdwp/common"
 )
