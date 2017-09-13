@@ -140,20 +140,24 @@ func startServer(conf *Config) {
 }
 
 func startDeadlineTimer(deadline int) {
-	time.AfterFunc(time.Duration(deadline)*time.Minute, func() {
-		goodbye := `
- _________________________________________
-< Bug's life was short, long live Gopher! >
- -----------------------------------------
-        \   ^__^
-         \  (oo)\_______
-            (__)\       )\/\
-                ||----w |
-                ||     ||
-`
-		log.Fatalln(goodbye)
-	})
+
+	if deadline != 0 {
+		time.AfterFunc(time.Duration(deadline)*time.Minute, func() {
+			goodbye := `
+	 _________________________________________
+	< Bug's life was short, long live Gopher! >
+	 -----------------------------------------
+		\   ^__^
+		 \  (oo)\_______
+		    (__)\       )\/\
+		        ||----w |
+		        ||     ||
+	`
+			log.Fatalln(goodbye)
+		})
+	}
 }
+
 
 func loadKey(conf *Config) {
 	bytes, err := ioutil.ReadFile(common.PublicKeyPath())
