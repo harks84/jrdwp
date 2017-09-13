@@ -18,6 +18,10 @@ const (
 	PublicKeyDir = "."
 	//PublicKeyFile filename
 	PublicKeyFile = ".jrdwp_key"
+	//PrivateKeyDir default client key path
+	PrivateKeyDir = "."
+	//PrivateKeyFile filename
+	PrivateKeyFile = ".jrdwp_privatekey"
 )
 
 var DeadlineDuration = time.Second * 60 * 30
@@ -25,6 +29,11 @@ var DeadlineDuration = time.Second * 60 * 30
 //PublicKeyPath concat file path of client key
 func PublicKeyPath() string {
 	return path.Join(PublicKeyDir, PublicKeyFile)
+}
+
+//PrivateKeyPath concat file path of private key
+func PrivateKeyPath() string {
+	return path.Join(PrivateKeyDir, PrivateKeyFile)
 }
 
 //SplitToInt split comma delimited string to int array
