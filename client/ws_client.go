@@ -30,13 +30,13 @@ type WSClient struct {
 }
 
 //NewWSClient create WsClient
-func NewWSClient(host string, port int, path string, origin string, jdwpPort int, key *rsa.PublicKey) *WSClient {
+func NewWSClient(host string, port int, path string, origin string, jdwpPort int, scheme string, key *rsa.PublicKey) *WSClient {
 	return &WSClient{
 		host:     host,
 		port:     port,
 		path:     path,
 		origin:   origin,
-		scheme:   "ws",
+		scheme:   scheme,
 		key:      key,
 		jdwpPort: jdwpPort,
 	}
