@@ -8,9 +8,9 @@ import (
 	"log"
 	"time"
 
-	"github.com/leonlee/jrdwp/client"
-	"github.com/leonlee/jrdwp/common"
-	"github.com/leonlee/jrdwp/server"
+	"github.com/harks84/jrdwp/client"
+	"github.com/harks84/jrdwp/common"
+	"github.com/harks84/jrdwp/server"
 )
 
 const (
